@@ -2,122 +2,114 @@
 
 public class PlayerInteraction : MonoBehaviour
 {
-    [Header("交互配置")]
-    public LayerMask interactableMask;
-    public float interactionDistance = 3f;
+    [Header("视角控制 (必须赋值)")]
+    public Camera playerCamera;      // 拖入你的 Main Camera
+    public Transform playerBody;     // 拖入你的 Player 整个物体
 
-    [Header("持握位置微调")]
-    public Vector3 holdOffset = new Vector3(0.5f, -0.5f, 1.0f);
-    public Vector3 holdRotation = Vector3.zero;
+    [Header("旋转参数")]
+    public float mouseSensitivity = 100f;
+    private float xRotation = 0f;
 
-    private ToolManager toolManager;
-    private Transform playerCamera;
-    private GameObject currentEquippedTool; // 记录当前拿在手里的物体
+    [Header("交互设置")]
+    public float interactRange = 3f;
+    public LayerMask interactableLayer;
+    public KeyCode interactKey = KeyCode.E;
+
+    [Header("道具模型")]
+    public bool hasShears = false;
+    public GameObject shearsInHand;
 
     void Start()
     {
-        toolManager = GetComponent<ToolManager>();
+        // 1. 锁定鼠标
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
-        // 获取相机
-        Camera cam = GetComponentInChildren<Camera>();
-        if (cam != null) playerCamera = cam.transform;
+        // 2. 自动检查并强行赋值
+        if (playerCamera == null) playerCamera = GetComponentInChildren<Camera>();
+        if (playerBody == null) playerBody = transform;
+
+        // 3. 预防性检查：如果相机上有刚体，会限制旋转，必须禁用
+        Rigidbody camRb = playerCamera.GetComponent<Rigidbody>();
+        if (camRb != null)
+        {
+            camRb.isKinematic = true;
+            Debug.Log("警告：已自动禁用相机上的刚体以允许旋转。");
+        }
+
+        if (shearsInHand != null) shearsInHand.SetActive(false);
     }
 
     void Update()
     {
-        if (playerCamera == null) return;
+        // 处理上下低头和左右转身
+        HandleRotation();
 
-        // --- 核心修复：强制跟随逻辑 ---
-        // 如果手里有工具，每一帧都强制把它拉回到相机前方的固定位置
-        if (currentEquippedTool != null)
-        {
-            currentEquippedTool.transform.position = playerCamera.TransformPoint(holdOffset);
-            currentEquippedTool.transform.rotation = playerCamera.rotation * Quaternion.Euler(holdRotation);
-        }
+        // 处理捡东西和割草
+        HandleInteraction();
+    }
 
+    void HandleRotation()
+    {
+        // 获取鼠标输入
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
+        // 计算并限制上下旋转角度
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -85f, 85f); // 允许近乎垂直看地
+
+        // 【关键点】直接修改 LocalRotation，无视其他脚本影响
+        playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+
+        // 左右转动身体
+        playerBody.Rotate(Vector3.up * mouseX);
+    }
+
+    void HandleInteraction()
+    {
+        // 屏幕中心发射射线
+        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
-        bool isHit = Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, interactionDistance, interactableMask);
 
-        // 调试射线
-        Debug.DrawRay(playerCamera.position, playerCamera.forward * interactionDistance, isHit ? Color.green : Color.red);
-
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Physics.Raycast(ray, out hit, interactRange, interactableLayer))
         {
-            if (toolManager == null) return;
-
-            // 情况 A：放下
-            if (currentEquippedTool != null)
+            if (Input.GetKeyDown(interactKey))
             {
-                DropCurrentTool();
-                return;
+                // 检查是否是剪刀
+                if (hit.collider.name.ToLower().Contains("shears") || hit.collider.CompareTag("Tool"))
+                {
+                    PickUpShears(hit.collider.gameObject);
+                }
             }
+        }
 
-            // 情况 B：拾取
-            if (isHit && hit.collider != null)
-            {
-                PickupTarget(hit.collider.gameObject);
-            }
+        // 割草逻辑
+        if (hasShears && Input.GetMouseButtonDown(0))
+        {
+            PerformTrim();
         }
     }
 
-    private void PickupTarget(GameObject obj)
+    void PickUpShears(GameObject obj)
     {
-        GameObject target = GetInteractableRoot(obj);
-
-        Rigidbody rb = target.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.isKinematic = true;
-            rb.useGravity = false;
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            rb.detectCollisions = false; // 拿起时关闭碰撞，防止把玩家弹飞
-        }
-
-        // 告知 ToolManager
-        toolManager.PickupAndEquipTool(target);
-
-        // 记录引用，触发 Update 中的强制跟随
-        currentEquippedTool = target;
-
-        // 设置父级（双重保险）
-        target.transform.SetParent(playerCamera);
+        hasShears = true;
+        Destroy(obj);
+        if (shearsInHand != null) shearsInHand.SetActive(true);
+        Debug.Log("成功获得剪刀！现在可以对着草点左键了。");
     }
 
-    private void DropCurrentTool()
+    void PerformTrim()
     {
-        if (currentEquippedTool == null) return;
-
-        Rigidbody rb = currentEquippedTool.GetComponent<Rigidbody>();
-        if (rb != null)
+        RaycastHit hit;
+        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 2.5f))
         {
-            rb.isKinematic = false;
-            rb.useGravity = true;
-            rb.detectCollisions = true;
-        }
-
-        toolManager.DropTool();
-        currentEquippedTool.transform.SetParent(null);
-        currentEquippedTool = null;
-    }
-
-    private GameObject GetInteractableRoot(GameObject obj)
-    {
-        Transform current = obj.transform;
-        GameObject lastValid = obj;
-
-        while (current.parent != null)
-        {
-            if (((1 << current.parent.gameObject.layer) & interactableMask) != 0)
+            // 尝试获取草上的脚本并触发割草
+            var target = hit.collider.GetComponent<TrimmableObject>();
+            if (target != null)
             {
-                lastValid = current.parent.gameObject;
-                current = current.parent;
-            }
-            else
-            {
-                break;
+                target.Trim();
             }
         }
-        return lastValid;
     }
 }
