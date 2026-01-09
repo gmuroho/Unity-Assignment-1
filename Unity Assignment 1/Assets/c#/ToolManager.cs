@@ -36,16 +36,16 @@ public class ToolManager : MonoBehaviour
 
     private void UseEquippedTool()
     {
-        // 调试：在 Scene 窗口画出一根 3 米长的红线，方便查看射线去向
+        
         Debug.DrawRay(playerCamera.position, playerCamera.forward * 3f, Color.red, 1f);
 
         RaycastHit hit;
-        // 射线从相机中心发出
+        
         if (Physics.Raycast(playerCamera.position, playerCamera.forward, out hit, 3f))
         {
-            Debug.Log($"<color=cyan>[射线命中]</color> 打中了: {hit.collider.name}");
+            Debug.Log($"<color=cyan>[射线]</color> 打中: {hit.collider.name}");
 
-            // 关键：在父级或自身寻找脚本
+            
             TrimmableObject trimmable = hit.collider.GetComponentInParent<TrimmableObject>();
 
             if (trimmable != null)
@@ -54,12 +54,12 @@ public class ToolManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("射线打中了物体，但该物体及其父级都没有 TrimmableObject 脚本！");
+                Debug.LogWarning("射线打中了物体，但该物体及其父级都没有 TrimmableObject 脚本");
             }
         }
         else
         {
-            Debug.Log("射线未打中任何物体，请靠近一点。");
+            Debug.Log("射线未打中任何物体请靠近。");
         }
     }
 
@@ -80,16 +80,16 @@ public class ToolManager : MonoBehaviour
         currentTool.transform.localPosition = holdOffset;
         currentTool.transform.localRotation = Quaternion.identity;
 
-        // 确保手中的工具不会挡住射线
+        
         currentTool.layer = LayerMask.NameToLayer("Ignore Raycast");
     }
 
-    // 补全缺失的 DropTool 方法，修复 PlayerInteraction 的报错
+    
     public void DropTool()
     {
         if (currentTool == null) return;
 
-        // 恢复工具的物理特性
+        
         Rigidbody rb = currentTool.GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -98,10 +98,10 @@ public class ToolManager : MonoBehaviour
             rb.detectCollisions = true;
         }
 
-        // 解除父子关系
+        
         currentTool.transform.SetParent(null);
 
-        // 恢复 Layer 为 Interactable 确保以后还能捡起来
+        
         currentTool.layer = LayerMask.NameToLayer("Interactable");
 
         currentTool = null;
