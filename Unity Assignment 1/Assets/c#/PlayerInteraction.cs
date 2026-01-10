@@ -2,113 +2,73 @@
 
 public class PlayerInteraction : MonoBehaviour
 {
-    [Header("视角控制 (必须赋值)")]
-    public Camera playerCamera;      // 拖入你的 Main Camera
-    public Transform playerBody;     // 拖入你的 Player 整个物体
+    public Camera mian_xiangji;
+    public Transform shen_ti;
 
-    [Header("旋转参数")]
-    public float mouseSensitivity = 100f;
-    private float xRotation = 0f;
+    public float mouse_v = 100f;
+    private float x_zhuan = 0f;
 
-    [Header("交互设置")]
-    public float interactRange = 3f;
-    public LayerMask interactableLayer;
-    public KeyCode interactKey = KeyCode.E;
+    public float juli = 3f;
+    public LayerMask whatIsLayer;
+    public KeyCode key_E = KeyCode.E;
 
-    [Header("道具模型")]
-    public bool hasShears = false;
-    public GameObject shearsInHand;
+    public bool you_jiandao = false;
+    public GameObject shou_shang_wu_ti;
 
     void Start()
     {
-        // 1. 锁定鼠标
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        // 2. 自动检查并强行赋值
-        if (playerCamera == null) playerCamera = GetComponentInChildren<Camera>();
-        if (playerBody == null) playerBody = transform;
+        if (mian_xiangji == null) mian_xiangji = GetComponentInChildren<Camera>();
+        if (shen_ti == null) shen_ti = transform;
 
-        // 3. 预防性检查：如果相机上有刚体，会限制旋转，必须禁用
-        Rigidbody camRb = playerCamera.GetComponent<Rigidbody>();
-        if (camRb != null)
+        Rigidbody rb = mian_xiangji.GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            camRb.isKinematic = true;
-            Debug.Log("警告：已自动禁用相机上的刚体以允许旋转。");
+            rb.isKinematic = true;
         }
 
-        if (shearsInHand != null) shearsInHand.SetActive(false);
+        if (shou_shang_wu_ti != null) shou_shang_wu_ti.SetActive(false);
     }
 
     void Update()
     {
-        // 处理上下低头和左右转身
-        HandleRotation();
+        float mouseX = Input.GetAxis("Mouse X") * mouse_v * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouse_v * Time.deltaTime;
 
-        // 处理捡东西和割草
-        HandleInteraction();
-    }
+        x_zhuan -= mouseY;
+        x_zhuan = Mathf.Clamp(x_zhuan, -85f, 85f);
 
-    void HandleRotation()
-    {
-        // 获取鼠标输入
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        mian_xiangji.transform.localRotation = Quaternion.Euler(x_zhuan, 0f, 0f);
+        shen_ti.Rotate(Vector3.up * mouseX);
 
-        // 计算并限制上下旋转角度
-        xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -85f, 85f); // 允许近乎垂直看地
+        Ray r = mian_xiangji.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        RaycastHit h;
 
-        // 【关键点】直接修改 LocalRotation，无视其他脚本影响
-        playerCamera.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-
-        // 左右转动身体
-        playerBody.Rotate(Vector3.up * mouseX);
-    }
-
-    void HandleInteraction()
-    {
-        // 屏幕中心发射射线
-        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, interactRange, interactableLayer))
+        if (Physics.Raycast(r, out h, juli, whatIsLayer))
         {
-            if (Input.GetKeyDown(interactKey))
+            if (Input.GetKeyDown(key_E))
             {
-                // 检查是否是剪刀
-                if (hit.collider.name.ToLower().Contains("shears") || hit.collider.CompareTag("Tool"))
+                if (h.collider.name.ToLower().Contains("shears") || h.collider.CompareTag("Tool"))
                 {
-                    PickUpShears(hit.collider.gameObject);
+                    you_jiandao = true;
+                    Destroy(h.collider.gameObject);
+                    if (shou_shang_wu_ti != null) shou_shang_wu_ti.SetActive(true);
                 }
             }
         }
 
-        // 割草逻辑
-        if (hasShears && Input.GetMouseButtonDown(0))
+        if (you_jiandao == true && Input.GetMouseButtonDown(0))
         {
-            PerformTrim();
-        }
-    }
-
-    void PickUpShears(GameObject obj)
-    {
-        hasShears = true;
-        Destroy(obj);
-        if (shearsInHand != null) shearsInHand.SetActive(true);
-        Debug.Log("成功获得剪刀！现在可以对着草点左键了。");
-    }
-
-    void PerformTrim()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, 2.5f))
-        {
-            // 尝试获取草上的脚本并触发割草
-            var target = hit.collider.GetComponent<TrimmableObject>();
-            if (target != null)
+            RaycastHit h2;
+            if (Physics.Raycast(mian_xiangji.transform.position, mian_xiangji.transform.forward, out h2, 2.5f))
             {
-                target.Trim();
+                var component = h2.collider.GetComponent<TrimmableObject>();
+                if (component != null)
+                {
+                    component.Trim();
+                }
             }
         }
     }

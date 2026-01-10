@@ -2,75 +2,58 @@ using UnityEngine;
 
 public class GrassProperty : MonoBehaviour
 {
-    [Header("修剪状态")]
-    public int health = 2;               
-    public float heightReduction = 0.4f; 
+    public int xue_liang = 2;
+    public float bian_short = 0.4f;
 
-    private Collider grassCollider;
-    private Vector3 originalScale;
+    Collider pz_box;
+    Vector3 yuan_lai_chicun;
 
-    
-    [Header("可选：模型引用(若不使用缩放而想换模型时使用)")]
-    public GameObject grassModel_High;
-    public GameObject grassModel_Low;
+    public GameObject cao_gao_model;
+    public GameObject cao_di_model;
 
     void Awake()
     {
-        
-        grassCollider = GetComponent<Collider>();
-        originalScale = transform.localScale;
+        pz_box = GetComponent<Collider>();
+        yuan_lai_chicun = transform.localScale;
     }
 
-    
-    
-    
     public void Cut()
     {
-        if (health <= 0) return;
-
-        health--;
-
-        
-        transform.localScale = new Vector3(
-            transform.localScale.x,
-            transform.localScale.y - (originalScale.y * heightReduction),
-            transform.localScale.z
-        );
-
-        
-        if (health == 1)
+        if (xue_liang <= 0)
         {
-            if (grassModel_High != null) grassModel_High.SetActive(false);
-            if (grassModel_Low != null) grassModel_Low.SetActive(true);
+            return;
         }
 
-        
-        if (health <= 0)
-        {
-            RemoveCollision();
+        xue_liang = xue_liang - 1;
 
-            
-            
-            GameProgressManager manager = Object.FindFirstObjectByType<GameProgressManager>();
-            if (manager != null)
+        Vector3 currentS = transform.localScale;
+        currentS.y = currentS.y - (yuan_lai_chicun.y * bian_short);
+        transform.localScale = currentS;
+
+        if (xue_liang == 1)
+        {
+            if (cao_gao_model != null) cao_gao_model.SetActive(false);
+            if (cao_di_model != null) cao_di_model.SetActive(true);
+        }
+
+        if (xue_liang <= 0)
+        {
+            if (pz_box != null)
             {
-                manager.OnGrassCut();
+                pz_box.enabled = false;
+            }
+
+            Vector3 finalS = transform.localScale;
+            finalS.y = 0.05f;
+            transform.localScale = finalS;
+
+            if (cao_di_model != null) cao_di_model.SetActive(false);
+
+            GameProgressManager script = Object.FindFirstObjectByType<GameProgressManager>();
+            if (script != null)
+            {
+                script.OnGrassCut();
             }
         }
-    }
-
-    private void RemoveCollision()
-    {
-        
-        if (grassCollider != null)
-        {
-            grassCollider.enabled = false;
-        }
-
-        
-        transform.localScale = new Vector3(transform.localScale.x, 0.05f, transform.localScale.z);
-
-        
-        if (grassModel_Low != null) grassModel_Low.SetActive(false);
     }
 }

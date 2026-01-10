@@ -2,45 +2,41 @@ using UnityEngine;
 
 public class ScissorsDebugger : MonoBehaviour
 {
-    private Vector3 initialLocalPos;
-    private Quaternion initialLocalRot;
-    private Vector3 initialLocalScale;
+    Vector3 startPos;
+    Quaternion startRot;
+    Vector3 startSize;
 
     void Awake()
     {
-        // 记录编辑模式下的正确位置
-        initialLocalPos = transform.localPosition;
-        initialLocalRot = transform.localRotation;
-        initialLocalScale = transform.localScale;
+        startPos = transform.localPosition;
+        startRot = transform.localRotation;
+        startSize = transform.localScale;
 
-        Debug.Log($"[剪刀调试] 初始本地坐标已记录: {initialLocalPos}");
+        Debug.Log("weizhi jilu le");
     }
 
     void Update()
     {
-        // 1. 检查是否被意外隐藏
-        MeshRenderer mr = GetComponent<MeshRenderer>();
-        if (mr && !mr.enabled)
+        MeshRenderer mian = GetComponent<MeshRenderer>();
+        if (mian != null)
         {
-            Debug.LogWarning("[剪刀调试] 警告：MeshRenderer 被禁用了！正在重新开启...");
-            mr.enabled = true;
+            if (mian.enabled == false)
+            {
+                mian.enabled = true;
+                Debug.Log("kaiqi xianshi");
+            }
         }
 
-        // 2. 检查坐标是否发生剧变
-        if (Vector3.Distance(transform.localPosition, initialLocalPos) > 0.01f)
+        float juli = Vector3.Distance(transform.localPosition, startPos);
+        if (juli > 0.01f)
         {
-            Debug.LogError($"[剪刀调试] 检测到坐标漂移！当前位置: {transform.localPosition}，正在强制还原...");
-            // 强制还原到你缩放好的位置
-            transform.localPosition = initialLocalPos;
-            transform.localRotation = initialLocalRot;
-            transform.localScale = initialLocalScale;
+            transform.localPosition = startPos;
+            transform.localRotation = startRot;
+            transform.localScale = startSize;
+            Debug.Log("weizhi cuole, huanyuan");
         }
 
-        // 3. 检查层级
-        if (gameObject.layer != LayerMask.NameToLayer("Default"))
-        {
-            // 如果你设置了特殊的 Layer，请确保相机能看到它
-            // Debug.Log("[剪刀调试] 当前 Layer 为: " + LayerMask.LayerToName(gameObject.layer));
-        }
+        int ceng = gameObject.layer;
+        // zheli jiancha cengji
     }
 }

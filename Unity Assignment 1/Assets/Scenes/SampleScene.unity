@@ -28158,9 +28158,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787f7bc1c304347418e9b8c00296dc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer: Grass
-  addMeshCollider: 1
-  cleanupOldComponents: 1
+  miao_zhun_ceng: Grass
+  yao_peng_zhuang: 1
+  qing_li_jiu_de: 1
 --- !u!114 &215135299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30918,9 +30918,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787f7bc1c304347418e9b8c00296dc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer: Grass
-  addMeshCollider: 1
-  cleanupOldComponents: 1
+  miao_zhun_ceng: Grass
+  yao_peng_zhuang: 1
+  qing_li_jiu_de: 1
 --- !u!114 &325484015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33308,9 +33308,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787f7bc1c304347418e9b8c00296dc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer: Grass
-  addMeshCollider: 1
-  cleanupOldComponents: 1
+  miao_zhun_ceng: Grass
+  yao_peng_zhuang: 1
+  qing_li_jiu_de: 1
 --- !u!114 &391016338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43922,9 +43922,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787f7bc1c304347418e9b8c00296dc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer: Grass
-  addMeshCollider: 1
-  cleanupOldComponents: 1
+  miao_zhun_ceng: Grass
+  yao_peng_zhuang: 1
+  qing_li_jiu_de: 1
 --- !u!114 &458526416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48520,9 +48520,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787f7bc1c304347418e9b8c00296dc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer: Grass
-  addMeshCollider: 1
-  cleanupOldComponents: 1
+  miao_zhun_ceng: Grass
+  yao_peng_zhuang: 1
+  qing_li_jiu_de: 1
 --- !u!114 &620505814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48691,9 +48691,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787f7bc1c304347418e9b8c00296dc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer: Grass
-  addMeshCollider: 1
-  cleanupOldComponents: 1
+  miao_zhun_ceng: Grass
+  yao_peng_zhuang: 1
+  qing_li_jiu_de: 1
 --- !u!114 &620550998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78481,9 +78481,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787f7bc1c304347418e9b8c00296dc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer: Grass
-  addMeshCollider: 1
-  cleanupOldComponents: 1
+  miao_zhun_ceng: Grass
+  yao_peng_zhuang: 1
+  qing_li_jiu_de: 1
 --- !u!114 &957102590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80742,9 +80742,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787f7bc1c304347418e9b8c00296dc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer: Grass
-  addMeshCollider: 1
-  cleanupOldComponents: 1
+  miao_zhun_ceng: Grass
+  yao_peng_zhuang: 1
+  qing_li_jiu_de: 1
 --- !u!114 &1027357040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86820,9 +86820,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787f7bc1c304347418e9b8c00296dc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer: Grass
-  addMeshCollider: 1
-  cleanupOldComponents: 1
+  miao_zhun_ceng: Grass
+  yao_peng_zhuang: 1
+  qing_li_jiu_de: 1
 --- !u!114 &1271851522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135817,11 +135817,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 388d3f5f8f512c44ea34edf5f967a134, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  speed: 5
   gravity: -9.81
-  jumpHeight: 2
-  groundCheck: {fileID: 106966920}
-  groundDistance: 0.3
+  jump_h: 2
+  di_mian: {fileID: 2062080363}
+  check_dis: 0.4
   groundMask:
     serializedVersion: 2
     m_Bits: 256
@@ -143670,9 +143670,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787f7bc1c304347418e9b8c00296dc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer: Grass
-  addMeshCollider: 1
-  cleanupOldComponents: 1
+  miao_zhun_ceng: Grass
+  yao_peng_zhuang: 1
+  qing_li_jiu_de: 1
 --- !u!114 &2049138783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143841,9 +143841,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787f7bc1c304347418e9b8c00296dc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer: Grass
-  addMeshCollider: 1
-  cleanupOldComponents: 1
+  miao_zhun_ceng: Grass
+  yao_peng_zhuang: 1
+  qing_li_jiu_de: 1
 --- !u!114 &2049497701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145194,9 +145194,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787f7bc1c304347418e9b8c00296dc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer: Grass
-  addMeshCollider: 1
-  cleanupOldComponents: 1
+  miao_zhun_ceng: Grass
+  yao_peng_zhuang: 1
+  qing_li_jiu_de: 1
 --- !u!114 &2076217684
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146747,9 +146747,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787f7bc1c304347418e9b8c00296dc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLayer: Grass
-  addMeshCollider: 1
-  cleanupOldComponents: 1
+  miao_zhun_ceng: Grass
+  yao_peng_zhuang: 1
+  qing_li_jiu_de: 1
 --- !u!114 &2131573130
 MonoBehaviour:
   m_ObjectHideFlags: 0

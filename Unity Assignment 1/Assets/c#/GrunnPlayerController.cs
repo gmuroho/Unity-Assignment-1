@@ -3,64 +3,54 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class GrunnPlayerController : MonoBehaviour
 {
-    [Header("移动设置")]
-    public float moveSpeed = 5f;
+    public float speed = 5f;
     public float gravity = -9.81f;
-    public float jumpHeight = 2f;
+    public float jump_h = 2f;
 
-    [Header("地面检测")]
-    public Transform groundCheck;
-    public float groundDistance = 0.4f;
+    public Transform di_mian;
+    public float check_dis = 0.4f;
     public LayerMask groundMask;
 
-    private CharacterController controller;
-    private Vector3 velocity;
-    private bool isGrounded;
+    private CharacterController ren_wu;
+    private Vector3 move_v;
+    private bool isGround;
 
     void Start()
     {
-        // 获取 CharacterController 组件
-        controller = GetComponent<CharacterController>();
+        ren_wu = GetComponent<CharacterController>();
 
-        // 自动检查引用
-        if (groundCheck == null)
+        if (di_mian == null)
         {
-            Debug.LogError("错误：没有给 'Ground Check' 赋值！请在 Player 下创建一个空物体并拖入。");
+            Debug.LogError("miss ground item");
         }
     }
 
     void Update()
     {
-        // 1. 地面检测
-        // 确保你的地面物体的 Layer 设置为了 "Ground" (或者你在面板里选中的层)
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        
+        if (di_mian == null) return;
 
-        if (isGrounded && velocity.y < 0)
+        isGround = Physics.CheckSphere(di_mian.position, check_dis, groundMask);
+
+        if (isGround && move_v.y < 0)
         {
-            // 微微给一点向下的力，确保角色贴地，但不要太大防止卡进地板
-            velocity.y = -2f;
+            move_v.y = -2f;
         }
 
-        // 2. 获取输入 (WASD)
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
 
-        // 计算移动方向 (相对于角色自身的朝向)
-        Vector3 move = transform.right * x + transform.forward * z;
+        Vector3 dir = transform.right * h + transform.forward * v;
 
-        // 3. 执行移动
-        controller.Move(move * moveSpeed * Time.deltaTime);
+        ren_wu.Move(dir * speed * Time.deltaTime);
 
-        // 4. 处理跳跃
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGround)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            move_v.y = Mathf.Sqrt(jump_h * -2f * gravity);
         }
 
-        // 5. 应用重力
-        velocity.y += gravity * Time.deltaTime;
+        move_v.y += gravity * Time.deltaTime;
 
-        // 6. 执行重力位移
-        controller.Move(velocity * Time.deltaTime);
+        ren_wu.Move(move_v * Time.deltaTime);
     }
 }

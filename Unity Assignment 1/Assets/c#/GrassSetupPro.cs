@@ -1,68 +1,63 @@
 using UnityEngine;
 
-/// <summary>
-/// 最终版草丛配置工具：支持无限层级递归，自动识别网格物体
-/// 挂载在最外层的 grasspivotroot 上执行即可
-/// </summary>
 public class GrassSetupPro : MonoBehaviour
 {
-    [Header("设置")]
-    public string targetLayer = "Grass";
-    public bool addMeshCollider = true;
-    public bool cleanupOldComponents = true;
+    public string miao_zhun_ceng = "Grass";
+    public bool yao_peng_zhuang = true;
+    public bool qing_li_jiu_de = true;
 
-    [ContextMenu("Execute Professional Setup")]
+    [ContextMenu("piont me start create grass")]
     public void Setup()
     {
-        int layer = LayerMask.NameToLayer(targetLayer);
-        if (layer == -1)
+        int ceng_index = LayerMask.NameToLayer(miao_zhun_ceng);
+        if (ceng_index == -1)
         {
-            Debug.LogError($"[GrassSetup] 找不到层级: {targetLayer}。请点击编辑器右上角 Layers -> Add Layer 手动添加。");
+            Debug.LogError("wrong cant find layer: " + miao_zhun_ceng + " zaiLayers add one");
             return;
         }
 
-        int totalCount = 0;
-        ProcessNode(transform, layer, ref totalCount);
+        int jishu = 0;
 
-        Debug.Log($"[GrassSetup] 配置完成！共处理了 {totalCount} 个草体。");
-    }
+        Transform[] all_er_zi = GetComponentsInChildren<Transform>(true);
 
-    private void ProcessNode(Transform current, int layer, ref int count)
-    {
-        // 只有带有网格的物体才被认为是“草”
-        bool isActualGrass = current.GetComponent<MeshFilter>() != null;
-
-        if (isActualGrass)
+        for (int i = 0; i < all_er_zi.Length; i++)
         {
-            // 1. 设置层级
-            current.gameObject.layer = layer;
+            Transform dang_qian = all_er_zi[i];
+            MeshFilter wg = dang_qian.GetComponent<MeshFilter>();
 
-            // 2. 清理可能存在的旧组件（可选），确保状态干净
-            if (cleanupOldComponents)
+            if (wg != null)
             {
-                var oldCols = current.GetComponents<Collider>();
-                foreach (var c in oldCols) if (!(c is MeshCollider)) DestroyImmediate(c);
-            }
+                dang_qian.gameObject.layer = ceng_index;
 
-            // 3. 添加/获取 MeshCollider
-            if (addMeshCollider && !current.GetComponent<MeshCollider>())
-            {
-                current.gameObject.AddComponent<MeshCollider>();
-            }
+                if (qing_li_jiu_de)
+                {
+                    Collider[] jiu_de = dang_qian.GetComponents<Collider>();
+                    for (int j = 0; j < jiu_de.Length; j++)
+                    {
+                        if (!(jiu_de[j] is MeshCollider))
+                        {
+                            DestroyImmediate(jiu_de[j]);
+                        }
+                    }
+                }
 
-            // 4. 添加割草逻辑脚本
-            if (!current.GetComponent<TrimmableObject>())
-            {
-                current.gameObject.AddComponent<TrimmableObject>();
-            }
+                if (yao_peng_zhuang)
+                {
+                    if (dang_qian.GetComponent<MeshCollider>() == null)
+                    {
+                        dang_qian.gameObject.AddComponent<MeshCollider>();
+                    }
+                }
 
-            count++;
+                if (dang_qian.GetComponent<TrimmableObject>() == null)
+                {
+                    dang_qian.gameObject.AddComponent<TrimmableObject>();
+                }
+
+                jishu++;
+            }
         }
 
-        // 递归处理所有子物体
-        for (int i = 0; i < current.childCount; i++)
-        {
-            ProcessNode(current.GetChild(i), layer, ref count);
-        }
+        Debug.Log("over, " + jishu + " gecaoyiwancheng");
     }
 }

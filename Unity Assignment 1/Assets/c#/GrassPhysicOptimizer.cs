@@ -1,22 +1,19 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
 public class GrassPhysicOptimizer : MonoBehaviour
 {
-    [Tooltip("0 摩擦力物理材质拖")]
-    public PhysicsMaterial zeroFrictionMaterial;
+    public PhysicsMaterial caodi_wuli;
 
     void Start()
     {
-        
-        
-        Collider col = GetComponent<Collider>();
-        if (col != null && zeroFrictionMaterial != null)
-        {
-            col.material = zeroFrictionMaterial;
-        }
+        Collider pengzhuangqi = GetComponent<Collider>();
 
-        
-        
+        if (pengzhuangqi != null)
+        {
+            if (caodi_wuli != null)
+            {
+                pengzhuangqi.material = caodi_wuli;
+            }
+        }
     }
 }
