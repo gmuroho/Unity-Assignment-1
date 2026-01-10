@@ -28173,11 +28173,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d708ff14e6eb041b869a8b7b0f91b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.05
-  height: 1
-  grassColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  grassCount: 12
-  radius: 0.3
+  kuan: 0.05
+  gao: 1
+  cao_color: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  count: 12
+  r: 0.3
 --- !u!4 &215135300
 Transform:
   m_ObjectHideFlags: 0
@@ -30933,11 +30933,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d708ff14e6eb041b869a8b7b0f91b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.05
-  height: 1
-  grassColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  grassCount: 12
-  radius: 0.3
+  kuan: 0.05
+  gao: 1
+  cao_color: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  count: 12
+  r: 0.3
 --- !u!4 &325484016
 Transform:
   m_ObjectHideFlags: 0
@@ -32791,11 +32791,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afa9962954d043f47899f8e271a4f329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mowRadius: 0.5
-  grassLayer:
+  jiancao_r: 0.5
+  cao_layer:
     serializedVersion: 2
     m_Bits: 0
-  cutPoint: {fileID: 0}
+  doudou: {fileID: 0}
 --- !u!114 &363717687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33323,11 +33323,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d708ff14e6eb041b869a8b7b0f91b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.05
-  height: 1
-  grassColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  grassCount: 12
-  radius: 0.3
+  kuan: 0.05
+  gao: 1
+  cao_color: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  count: 12
+  r: 0.3
 --- !u!4 &391016339
 Transform:
   m_ObjectHideFlags: 0
@@ -43937,11 +43937,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d708ff14e6eb041b869a8b7b0f91b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.05
-  height: 1
-  grassColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  grassCount: 12
-  radius: 0.3
+  kuan: 0.05
+  gao: 1
+  cao_color: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  count: 12
+  r: 0.3
 --- !u!4 &458526417
 Transform:
   m_ObjectHideFlags: 0
@@ -48145,7 +48145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d900178e2130f0c44ac4a61ed885fa8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressManager: {fileID: 0}
+  guanjia: {fileID: 0}
 --- !u!1 &612429781
 GameObject:
   m_ObjectHideFlags: 0
@@ -48535,11 +48535,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d708ff14e6eb041b869a8b7b0f91b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.05
-  height: 1
-  grassColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  grassCount: 12
-  radius: 0.3
+  kuan: 0.05
+  gao: 1
+  cao_color: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  count: 12
+  r: 0.3
 --- !u!4 &620505815
 Transform:
   m_ObjectHideFlags: 0
@@ -48706,11 +48706,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d708ff14e6eb041b869a8b7b0f91b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.05
-  height: 1
-  grassColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  grassCount: 12
-  radius: 0.3
+  kuan: 0.05
+  gao: 1
+  cao_color: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  count: 12
+  r: 0.3
 --- !u!4 &620550999
 Transform:
   m_ObjectHideFlags: 0
@@ -60679,11 +60679,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afa9962954d043f47899f8e271a4f329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mowRadius: 0.5
-  grassLayer:
+  jiancao_r: 0.5
+  cao_layer:
     serializedVersion: 2
     m_Bits: 0
-  cutPoint: {fileID: 0}
+  doudou: {fileID: 0}
 --- !u!114 &741276915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67087,7 +67087,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d900178e2130f0c44ac4a61ed885fa8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressManager: {fileID: 1570647470}
+  guanjia: {fileID: 1570647470}
 --- !u!1 &807470407
 GameObject:
   m_ObjectHideFlags: 0
@@ -78496,11 +78496,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d708ff14e6eb041b869a8b7b0f91b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.05
-  height: 1
-  grassColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  grassCount: 12
-  radius: 0.3
+  kuan: 0.05
+  gao: 1
+  cao_color: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  count: 12
+  r: 0.3
 --- !u!4 &957102591
 Transform:
   m_ObjectHideFlags: 0
@@ -80757,11 +80757,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d708ff14e6eb041b869a8b7b0f91b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.05
-  height: 1
-  grassColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  grassCount: 12
-  radius: 0.3
+  kuan: 0.05
+  gao: 1
+  cao_color: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  count: 12
+  r: 0.3
 --- !u!4 &1027357041
 Transform:
   m_ObjectHideFlags: 0
@@ -86835,11 +86835,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d708ff14e6eb041b869a8b7b0f91b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.05
-  height: 1
-  grassColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  grassCount: 12
-  radius: 0.3
+  kuan: 0.05
+  gao: 1
+  cao_color: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  count: 12
+  r: 0.3
 --- !u!4 &1271851523
 Transform:
   m_ObjectHideFlags: 0
@@ -127865,14 +127865,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7faa18d4610336b4ab469df4450a9b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalGrass: 10
-  totalWatering: 2
-  totalDigging: 2
-  taskStatusText: {fileID: 448924025}
-  resultPanel: {fileID: 975239384}
-  endingText: {fileID: 65687139}
-  restartButton: {fileID: 1204153121}
-  exitDoor: {fileID: 610235887}
+  cao_total: 20
+  shui_total: 5
+  dig_total: 3
+  ui1: {fileID: 448924025}
+  mianban: {fileID: 975239384}
+  end_txt: {fileID: 65687139}
+  btn_cc: {fileID: 1204153121}
+  men: {fileID: 610235887}
 --- !u!4 &1570647471
 Transform:
   m_ObjectHideFlags: 0
@@ -143685,11 +143685,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d708ff14e6eb041b869a8b7b0f91b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.05
-  height: 1
-  grassColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  grassCount: 12
-  radius: 0.3
+  kuan: 0.05
+  gao: 1
+  cao_color: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  count: 12
+  r: 0.3
 --- !u!4 &2049138784
 Transform:
   m_ObjectHideFlags: 0
@@ -143856,11 +143856,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d708ff14e6eb041b869a8b7b0f91b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.05
-  height: 1
-  grassColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  grassCount: 12
-  radius: 0.3
+  kuan: 0.05
+  gao: 1
+  cao_color: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  count: 12
+  r: 0.3
 --- !u!4 &2049497702
 Transform:
   m_ObjectHideFlags: 0
@@ -145209,11 +145209,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d708ff14e6eb041b869a8b7b0f91b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.05
-  height: 1
-  grassColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  grassCount: 12
-  radius: 0.3
+  kuan: 0.05
+  gao: 1
+  cao_color: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  count: 12
+  r: 0.3
 --- !u!4 &2076217685
 Transform:
   m_ObjectHideFlags: 0
@@ -146762,11 +146762,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d708ff14e6eb041b869a8b7b0f91b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0.05
-  height: 1
-  grassColor: {r: 0.2, g: 0.8, b: 0.2, a: 1}
-  grassCount: 12
-  radius: 0.3
+  kuan: 0.05
+  gao: 1
+  cao_color: {r: 0.2, g: 0.8, b: 0.2, a: 1}
+  count: 12
+  r: 0.3
 --- !u!4 &2131573131
 Transform:
   m_ObjectHideFlags: 0

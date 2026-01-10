@@ -3,75 +3,73 @@ using UnityEngine;
 [RequireComponent(typeof(ParticleSystem))]
 public class GrassParticleAutoConfig : MonoBehaviour
 {
-    [ContextMenu("配置为碎草")]
+    [ContextMenu("Pei Zhi Sui Cao")]
     public void ConfigureAsGrass()
     {
-        ParticleSystem ps = GetComponent<ParticleSystem>();
-        var main = ps.main;
-        var emission = ps.emission;
-        var shape = ps.shape;
-        var rot = ps.rotationOverLifetime;
-        var size = ps.sizeOverLifetime;
+        ParticleSystem lizi = GetComponent<ParticleSystem>();
 
-        
-        ParticleSystemRenderer psRenderer = GetComponent<ParticleSystemRenderer>();
+        ParticleSystem.MainModule m = lizi.main;
+        ParticleSystem.EmissionModule e = lizi.emission;
+        ParticleSystem.ShapeModule s = lizi.shape;
+        ParticleSystem.RotationOverLifetimeModule r = lizi.rotationOverLifetime;
+        ParticleSystem.SizeOverLifetimeModule daxiao = lizi.sizeOverLifetime;
 
-        
-        main.startLifetime = new ParticleSystem.MinMaxCurve(0.8f, 1.2f);
-        main.startSpeed = new ParticleSystem.MinMaxCurve(3f, 6f);
-        main.startSize = new ParticleSystem.MinMaxCurve(0.1f, 0.3f);
-        main.gravityModifier = 1.8f;
-        main.simulationSpace = ParticleSystemSimulationSpace.World;
-        main.stopAction = ParticleSystemStopAction.Destroy;
+        ParticleSystemRenderer rend = GetComponent<ParticleSystemRenderer>();
 
-        
-        emission.rateOverTime = 0;
-        emission.SetBursts(new ParticleSystem.Burst[] { new ParticleSystem.Burst(0, 20) });
+        m.startLifetime = new ParticleSystem.MinMaxCurve(0.8f, 1.2f);
+        m.startSpeed = new ParticleSystem.MinMaxCurve(3f, 6f);
+        m.startSize = new ParticleSystem.MinMaxCurve(0.1f, 0.3f);
+        m.gravityModifier = 1.8f;
+        m.simulationSpace = ParticleSystemSimulationSpace.World;
+        m.stopAction = ParticleSystemStopAction.Destroy;
 
-        
-        shape.shapeType = ParticleSystemShapeType.Cone;
-        shape.angle = 30f;
-        shape.radius = 0.15f;
+        e.rateOverTime = 0;
+        ParticleSystem.Burst[] b = new ParticleSystem.Burst[1];
+        b[0] = new ParticleSystem.Burst(0, 20);
+        e.SetBursts(b);
 
-        
-        rot.enabled = true;
-        rot.z = new ParticleSystem.MinMaxCurve(-720f, 720f);
+        s.shapeType = ParticleSystemShapeType.Cone;
+        s.angle = 30f;
+        s.radius = 0.15f;
 
-        
-        size.enabled = true;
-        AnimationCurve curve = new AnimationCurve();
-        curve.AddKey(0f, 1f);
-        curve.AddKey(0.7f, 0.8f);
-        curve.AddKey(1f, 0f);
-        size.size = new ParticleSystem.MinMaxCurve(1f, curve);
+        r.enabled = true;
+        r.z = new ParticleSystem.MinMaxCurve(-720f, 720f);
 
-        
-        if (psRenderer != null)
+        daxiao.enabled = true;
+        AnimationCurve quxian = new AnimationCurve();
+        quxian.AddKey(0f, 1f);
+        quxian.AddKey(0.7f, 0.8f);
+        quxian.AddKey(1f, 0f);
+        daxiao.size = new ParticleSystem.MinMaxCurve(1f, quxian);
+
+        if (rend != null)
         {
-            
-            
-            psRenderer.renderMode = (ParticleSystemRenderMode)3;
+            rend.renderMode = ParticleSystemRenderMode.Mesh;
 
-            psRenderer.lengthScale = 2f;
-            psRenderer.velocityScale = 0.1f;
+            rend.lengthScale = 2f;
+            rend.velocityScale = 0.1f;
 
-            
-            if (psRenderer.sharedMaterial == null || psRenderer.sharedMaterial.name.Contains("Default"))
+            if (rend.sharedMaterial == null || rend.sharedMaterial.name.Contains("Default"))
             {
-                
-                Shader defaultShader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
-                if (defaultShader == null) defaultShader = Shader.Find("Particles/Standard Unlit");
-
-                if (defaultShader != null)
+                Shader s1 = Shader.Find("Universal Render Pipeline/Particles/Unlit");
+                if (s1 == null)
                 {
-                    Material grassMat = new Material(defaultShader);
-                    grassMat.color = new Color(0.2f, 0.6f, 0.1f); 
-                    if (grassMat.HasProperty("_BaseColor")) grassMat.SetColor("_BaseColor", grassMat.color);
-                    psRenderer.sharedMaterial = grassMat;
+                    s1 = Shader.Find("Particles/Standard Unlit");
+                }
+
+                if (s1 != null)
+                {
+                    Material m1 = new Material(s1);
+                    m1.color = new Color(0.2f, 0.6f, 0.1f);
+                    if (m1.HasProperty("_BaseColor"))
+                    {
+                        m1.SetColor("_BaseColor", m1.color);
+                    }
+                    rend.sharedMaterial = m1;
                 }
             }
         }
 
-        Debug.Log("<color=green>碎草粒子配置成功！</color> 已通过类型转换绕过枚举引用报错?");
+        Debug.Log("Sui Cao Ok!");
     }
 }

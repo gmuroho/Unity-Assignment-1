@@ -1,167 +1,110 @@
 using UnityEngine;
-using TMPro; 
+using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System;
 
 public class GameProgressManager : MonoBehaviour
 {
-    [Header("Mission Targets")]
-    public int totalGrass = 20;    
-    public int totalWatering = 5;  
-    public int totalDigging = 3;   
+    public int cao_total = 20;
+    public int shui_total = 5;
+    public int dig_total = 3;
 
-    [Header("UI References")]
-    public TextMeshProUGUI taskStatusText; 
-    public GameObject resultPanel;         
-    public TextMeshProUGUI endingText;      
-    public Button restartButton;           
+    public TextMeshProUGUI ui1;
+    public GameObject mianban;
+    public TextMeshProUGUI end_txt;
+    public Button btn_cc;
 
-    [Header("Exit Settings")]
-    public GameObject exitDoor;            
+    public GameObject men;
 
-    
-    private int currentGrass = 0;
-    private int currentWater = 0;
-    private int currentDig = 0;
+    int c1 = 0;
+    int s2 = 0;
+    int d3 = 0;
 
-    private bool isGameEnded = false;
+    bool is_over = false;
 
     void Start()
     {
-        
-        if (resultPanel != null)
-        {
-            resultPanel.SetActive(false); 
-        }
-
-        // 2. 初始化出口状态
-        if (exitDoor != null)
-        {
-            exitDoor.SetActive(false); 
-        }
-
-        
-        if (restartButton != null)
-        {
-            restartButton.onClick.AddListener(RestartGame);
-        }
-
+        mianban.SetActive(false);
+        men.SetActive(false);
+        btn_cc.onClick.AddListener(RestartGame);
         UpdateUI();
     }
 
-    
-
     public void OnGrassCut()
     {
-        if (currentGrass < totalGrass)
+        if (c1 < cao_total)
         {
-            currentGrass++;
+            c1++;
             UpdateUI();
-            CheckAllTasksComplete();
+            check();
         }
     }
 
     public void OnWatering()
     {
-        if (currentWater < totalWatering)
+        if (s2 < shui_total)
         {
-            currentWater++;
+            s2++;
             UpdateUI();
-            CheckAllTasksComplete();
+            check();
         }
     }
 
     public void OnDigging()
     {
-        if (currentDig < totalDigging)
+        if (d3 < dig_total)
         {
-            currentDig++;
+            d3++;
             UpdateUI();
-            CheckAllTasksComplete();
+            check();
         }
     }
-
-    
 
     void UpdateUI()
     {
-        if (taskStatusText != null)
-        {
-            
-            taskStatusText.text = $"Grass: {currentGrass}/{totalGrass}\n" +
-                                 $"Water: {currentWater}/{totalWatering}\n" +
-                                 $"Dig: {currentDig}/{totalDigging}";
-        }
+        ui1.text = "Grass: " + c1 + "/" + cao_total + "\n" +
+                   "Water: " + s2 + "/" + shui_total + "\n" +
+                   "Dig: " + d3 + "/" + dig_total;
     }
 
-    void CheckAllTasksComplete()
+    void check()
     {
-        
         if (AreAllTasksCompleted())
         {
-            OpenExit();
+            if (!men.activeSelf)
+            {
+                men.SetActive(true);
+            }
         }
     }
 
-    void OpenExit()
-    {
-        if (exitDoor != null && !exitDoor.activeSelf)
-        {
-            exitDoor.SetActive(true); 
-            Debug.Log("Work finished. The gate is open.");
-        }
-    }
-
-    
-
-    
     public void TriggerEnding()
     {
-        
-        
-        if (isGameEnded || !AreAllTasksCompleted())
+        if (is_over || !AreAllTasksCompleted())
         {
-            if (!AreAllTasksCompleted()) Debug.Log("Attempted to trigger ending, but tasks are incomplete.");
             return;
         }
 
-        isGameEnded = true;
+        is_over = true;
+        mianban.SetActive(true);
+        end_txt.text = "You finished your work, but you feel something stayed here forever.";
+        ui1.gameObject.SetActive(false);
 
-        if (resultPanel != null)
-        {
-            resultPanel.SetActive(true); 
-
-            if (endingText != null)
-            {
-                
-                endingText.text = "You finished your work, but you feel something stayed here forever.";
-            }
-
-            
-            if (taskStatusText != null) taskStatusText.gameObject.SetActive(false);
-
-            
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
-    
     public void RestartGame()
     {
-        
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    
     public bool AreAllTasksCompleted()
     {
-        return currentGrass >= totalGrass && currentWater >= totalWatering && currentDig >= totalDigging;
+        return c1 >= cao_total && s2 >= shui_total && d3 >= dig_total;
     }
 
-    
-    internal void ShowEnding()
+    public void ShowEnding()
     {
         TriggerEnding();
     }

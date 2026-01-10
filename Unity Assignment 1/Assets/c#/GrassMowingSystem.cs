@@ -1,89 +1,77 @@
 using UnityEngine;
 using System.Collections;
 
-
-
-
 public class GrassMower : MonoBehaviour
 {
-    [Header("ºÙ≤›…Ë÷√")]
-    public float mowRadius = 0.5f;       
-    public LayerMask grassLayer;         
-    public Transform cutPoint;           
+    public float jiancao_r = 0.5f;
+    public LayerMask cao_layer;
+    public Transform doudou;
 
-    
     public void PerformMow()
     {
-        if (cutPoint == null) cutPoint = transform;
-
-        
-        Collider[] hitGrass = Physics.OverlapSphere(cutPoint.position, mowRadius, grassLayer);
-
-        foreach (var grass in hitGrass)
+        if (doudou == null)
         {
-            MowableGrass target = grass.GetComponent<MowableGrass>();
+            doudou = transform;
+        }
+
+        Collider[] objs = Physics.OverlapSphere(doudou.position, jiancao_r, cao_layer);
+
+        for (int i = 0; i < objs.Length; i++)
+        {
+            MowableGrass target = objs[i].GetComponent<MowableGrass>();
             if (target != null)
             {
-                
-                Vector3 blastDirection = (grass.transform.position - cutPoint.position).normalized;
-                blastDirection += Vector3.up * 0.5f; 
-                target.OnMown(blastDirection);
+                Vector3 fx = (objs[i].transform.position - doudou.position).normalized;
+                fx = fx + Vector3.up * 0.5f;
+                target.OnMown(fx);
             }
         }
     }
 }
 
-
-
-
 public class MowableGrass : MonoBehaviour
 {
-    [Header(" ”–ß")]
-    public GameObject grassParticlePrefab; 
-    public GameObject cutGrassModel;      
+    public GameObject lizi;
+    public GameObject moxing;
 
-    [Header("≤›∑……¢")]
-    public float flyForce = 5f;
-    public float torqueForce = 10f;       
+    public float fly = 5f;
+    public float tor = 10f;
 
-    private bool isCut = false;
+    bool yi_jian_guo = false;
 
-    public void OnMown(Vector3 direction)
+    public void OnMown(Vector3 dir)
     {
-        if (isCut) return;
-        isCut = true;
-
-        
-        if (grassParticlePrefab != null)
+        if (yi_jian_guo == true)
         {
-            Instantiate(grassParticlePrefab, transform.position, Quaternion.identity);
+            return;
+        }
+        yi_jian_guo = true;
+
+        if (lizi != null)
+        {
+            Instantiate(lizi, transform.position, Quaternion.identity);
         }
 
-        
-        
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb == null)
+        Rigidbody g_rb = GetComponent<Rigidbody>();
+        if (g_rb == null)
         {
-            rb = gameObject.AddComponent<Rigidbody>();
+            g_rb = gameObject.AddComponent<Rigidbody>();
         }
 
-        
-        rb.isKinematic = false;
-        rb.useGravity = true;
+        g_rb.isKinematic = false;
+        g_rb.useGravity = true;
 
-        
-        rb.AddForce(direction * flyForce, ForceMode.Impulse);
-        
-        rb.AddTorque(new Vector3(Random.value, Random.value, Random.value) * torqueForce, ForceMode.Impulse);
+        g_rb.AddForce(dir * fly, ForceMode.Impulse);
 
-        
-        Collider col = GetComponent<Collider>();
-        if (col != null)
+        Vector3 sui_ji_li = new Vector3(Random.value, Random.value, Random.value);
+        g_rb.AddTorque(sui_ji_li * tor, ForceMode.Impulse);
+
+        Collider c = GetComponent<Collider>();
+        if (c != null)
         {
-            col.isTrigger = false; 
+            c.isTrigger = false;
         }
 
-        
         Destroy(gameObject, 3f);
     }
 }

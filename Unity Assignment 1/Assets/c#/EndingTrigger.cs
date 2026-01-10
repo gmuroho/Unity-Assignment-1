@@ -2,26 +2,13 @@ using UnityEngine;
 
 public class EndingTrigger : MonoBehaviour
 {
-   
-    [Header("引用设置")]
-    
-    public GameProgressManager progressManager;
+    public GameProgressManager guanjia;
 
-    
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        
-        if (other.CompareTag("Player"))
+        if (other.tag == "Player")
         {
-            if (progressManager != null)
-            {
-                
-                progressManager.ShowEnding();
-            }
-            else
-            {
-                Debug.LogError("EndingTrigger 脚本上的 Progress Manager 槽位空");
-            }
+            guanjia.ShowEnding();
         }
     }
 }
