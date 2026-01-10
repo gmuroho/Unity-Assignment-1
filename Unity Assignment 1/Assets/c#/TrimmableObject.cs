@@ -4,13 +4,16 @@ using System.Collections;
 public class TrimmableObject : MonoBehaviour
 {
     [Header("Visual Feedback")]
-    public float cutHeight = 0.2f;    // 割完后的缩放高度
+    public float cutHeight = 0.2f;
     public Color cutColor = new Color(0.35f, 0.45f, 0.25f);
-    public float shrinkSpeed = 5f;    // 缩放平滑度
+    public float shrinkSpeed = 5f;
 
     private bool isTrimmed = false;
     private Vector3 originalScale;
     private MeshRenderer meshRenderer;
+
+    private bool startShrinking = false;
+    private Vector3 targetScale;
 
     void Start()
     {
@@ -18,35 +21,36 @@ public class TrimmableObject : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
     }
 
-    // 这里的方法名必须是 Trim，以修复 CS1061 报错
-    public void Trim()
+    void Update()
     {
-        if (isTrimmed) return;
-        isTrimmed = true;
-
-        // 执行割草后的反馈
-        StopAllCoroutines();
-        StartCoroutine(TrimAnimation());
+        if (startShrinking == true)
+        {
+            float dist = Vector3.Distance(transform.localScale, targetScale);
+            if (dist > 0.01f)
+            {
+                transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * shrinkSpeed);
+            }
+            else
+            {
+                transform.localScale = targetScale;
+                startShrinking = false;
+            }
+        }
     }
 
-    private IEnumerator TrimAnimation()
+    public void Trim()
     {
-        // 视觉变色
-        if (meshRenderer != null)
+        if (isTrimmed == false)
         {
-            meshRenderer.material.color = cutColor;
-        }
+            isTrimmed = true;
 
-        // 平滑缩放高度
-        Vector3 targetScale = new Vector3(originalScale.x, cutHeight, originalScale.z);
-        while (Vector3.Distance(transform.localScale, targetScale) > 0.01f)
-        {
-            transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * shrinkSpeed);
-            yield return null;
-        }
-        transform.localScale = targetScale;
+            if (meshRenderer != null)
+            {
+                meshRenderer.material.color = cutColor;
+            }
 
-        // 如果你有 GrassParticleAutoConfig，可以在这里实例化粒子效果
-        // Instantiate(particlePrefab, transform.position, Quaternion.identity);
+            targetScale = new Vector3(originalScale.x, cutHeight, originalScale.z);
+            startShrinking = true;
+        }
     }
 }

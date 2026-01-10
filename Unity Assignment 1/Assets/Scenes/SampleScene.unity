@@ -28479,7 +28479,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 240150388}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.09150163, w: 0.99580497}
+  m_LocalRotation: {x: 0, y: 0, z: -0.25881907, w: 0.9659259}
   m_LocalPosition: {x: -0.0009640455, y: 0.30400002, z: 0.021999955}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -32770,15 +32770,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78d381c140393d04abb768faae5b32e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftPivot: {fileID: 31277608}
-  rightPivot: {fileID: 2099773696}
-  cutSound: {fileID: 1123080119}
-  openSound: {fileID: 300289827}
-  openAngle: 60
-  animationSpeed: 12
-  interactDistance: 3
-  heldPosition: {x: 0, y: -0.5, z: 1.2}
-  heldRotation: {x: 0, y: 0, z: 0}
+  l_zhou: {fileID: 0}
+  r_zhou: {fileID: 0}
+  sound1: {fileID: 0}
+  sound2: {fileID: 0}
+  open_deg: 30
+  ssspeed: 12
+  dist: 3
+  pppos: {x: 0, y: -0.5, z: 1.2}
+  rrrot: {x: 0, y: 0, z: 0}
 --- !u!114 &363717686
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43054,10 +43054,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89db5aacaec036e41a057c9474e34106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groupLeft: {fileID: 187272294}
-  groupRight: {fileID: 1624923772}
-  openAngle: 10.5
-  closeAngle: 0.5
+  groupLeft: {fileID: 0}
+  groupRight: {fileID: 0}
+  openAngle: 30
+  closeAngle: 0
   cutSpeed: 0.1
   recoverSpeed: 0.2
 --- !u!1 &436511940
@@ -60696,15 +60696,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78d381c140393d04abb768faae5b32e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftPivot: {fileID: 1278344484}
-  rightPivot: {fileID: 1116539397}
-  cutSound: {fileID: 1123080119}
-  openSound: {fileID: 300289827}
-  openAngle: 60
-  animationSpeed: 12
-  interactDistance: 3
-  heldPosition: {x: 0, y: -0.5, z: 1.2}
-  heldRotation: {x: 0, y: 0, z: 0}
+  l_zhou: {fileID: 0}
+  r_zhou: {fileID: 0}
+  sound1: {fileID: 0}
+  sound2: {fileID: 0}
+  open_deg: 30
+  ssspeed: 12
+  dist: 3
+  pppos: {x: 0, y: -0.5, z: 1.2}
+  rrrot: {x: 0, y: 0, z: 0}
 --- !u!114 &741276916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83731,7 +83731,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1116539396}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.25881907, w: 0.9659259}
   m_LocalPosition: {x: 0.12496406, y: -0.199, z: 0.17900002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -86891,7 +86891,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1278344483}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.25881907, w: 0.9659259}
   m_LocalPosition: {x: 0.12496406, y: -0.199, z: 0.179}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -135781,7 +135781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88b80d4621f6fd44c965e24d09b32ec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toolMountPoint: {fileID: 916623227}
+  toolMountPoint: {fileID: 0}
   holdOffset: {x: 0.4, y: -0.4, z: 0.7}
 --- !u!114 &1722240056
 MonoBehaviour:
@@ -135795,16 +135795,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4af9de38864d4b43a4db8a48d4e2013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 916623230}
-  playerBody: {fileID: 1722240052}
-  mouseSensitivity: 100
-  interactRange: 3
-  interactableLayer:
+  mian_xiangji: {fileID: 0}
+  shen_ti: {fileID: 0}
+  mouse_v: 100
+  juli: 3
+  whatIsLayer:
     serializedVersion: 2
-    m_Bits: 8
-  interactKey: 101
-  hasShears: 0
-  shearsInHand: {fileID: 0}
+    m_Bits: 0
+  key_E: 101
+  you_jiandao: 0
+  shou_shang_wu_ti: {fileID: 0}
 --- !u!114 &1722240059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135999,7 +135999,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1724253909}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.09150163, w: 0.99580497}
+  m_LocalRotation: {x: 0, y: 0, z: 0.25881907, w: 0.9659259}
   m_LocalPosition: {x: -0.0009640455, y: 0.30400002, z: 0.02199997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -138704,8 +138704,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groupLeft: {fileID: 1724253910}
   groupRight: {fileID: 240150389}
-  openAngle: 10.5
-  closeAngle: 0.5
+  openAngle: 30
+  closeAngle: 0
   cutSpeed: 0.1
   recoverSpeed: 0.2
 --- !u!1 &1870023003

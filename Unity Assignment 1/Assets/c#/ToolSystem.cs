@@ -1,98 +1,111 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using TMPro; 
+using TMPro;
 
 public class ToolSystem : MonoBehaviour
 {
-    [Header("手中模型 (Camera下摆好的 0:剪刀, 1:水壶, 2:铲子)")]
+    [Header("model in hand")]
     public GameObject[] toolModels;
 
-    [Header("地面模型 (场景中平放的 0:剪刀, 1:水壶, 2:铲子)")]
+    [Header("model on the ground")]
     public GameObject[] groundObjects;
 
-    [Header("粒子特效 (0:剪草/飞溅, 1:出水, 2:土块)")]
+    [Header("particle effect (0:jiancao, 1:chushui, 2:tukuai)")]
     public ParticleSystem[] effects;
 
-    [Header("拾取音效 (对应 0,1,2 三个工具)")]
+    [Header("shiquyinxiao duiying 012)")]
     public AudioClip[] pickUpSounds;
 
-    [Header("使用音效 (对应 0:剪刀咔嚓, 1:水壶流声, 2:铲子铲土)")]
+    [Header("using audio (tongshang)")]
     public AudioClip[] useSounds;
 
-    [Header("音频播放源 (挂载在Player或相机上)")]
+    [Header("yinpingbofangyuan (guazai playerorcamera shang)")]
     public AudioSource audioSource;
 
-    [Header("UI图标")]
+    [Header("ui icon")]
     public Image[] toolIcons;
 
-    [Header("GRUNN 提示 UI 设置")]
-    public TextMeshProUGUI hintText;  
-    public string pickUpPrefix = "拾取 "; 
-    public string[] toolNames = { "剪刀", "水壶", "铲子" }; 
+    [Header("tishi ui setting")]
+    public TextMeshProUGUI hintText;
+    public string pickUpPrefix = "pick up ";
+    public string[] toolNames = { "scissors", "kettle", "shovel" };
 
-    [Header("剪草判定设置")]
-    public float reachDistance = 3.5f; 
-    public string grassTag = "Grass"; 
-    public LayerMask interactableLayers; 
+    [Header("jiancaopandingshezhi")]
+    public float reachDistance = 3.5f;
+    public string grassTag = "Grass";
+    public LayerMask interactableLayers;
 
     private int currentToolID = -1;
     private bool isActing = false;
 
     void Start()
     {
-        
-        foreach (GameObject go in toolModels) go.SetActive(false);
-        foreach (GameObject go in groundObjects) go.SetActive(true);
+        for (int i = 0; i < toolModels.Length; i++)
+        {
+            toolModels[i].SetActive(false);
+        }
+        for (int j = 0; j < groundObjects.Length; j++)
+        {
+            groundObjects[j].SetActive(true);
+        }
         UpdateUI();
     }
 
     void Update()
     {
-        
-        if (hintText != null) hintText.text = "";
-        HandleHintRaycast();
-        
-
-        
-        if (Input.GetKeyDown(KeyCode.E) || (Input.GetMouseButtonDown(0) && currentToolID == -1))
+        if (hintText != null)
         {
-            CheckPickUp();
+            hintText.text = "";
         }
 
-        
-        if (Input.GetKeyDown(KeyCode.Q) && currentToolID != -1)
-        {
-            DropTool();
-        }
-
-        
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchToPickedTool(0);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchToPickedTool(1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SwitchToPickedTool(2);
-
-        
-        if (currentToolID != -1 && !isActing)
-        {
-            HandleToolUsage();
-        }
-    }
-
-    
-    void HandleHintRaycast()
-    {
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        if (Physics.Raycast(ray, out RaycastHit hit, 3.5f))
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 3.5f))
         {
-            
             PickableItem item = hit.collider.GetComponent<PickableItem>();
             if (item != null)
             {
                 int id = item.toolID;
-                if (hintText != null && id < toolNames.Length)
+                if (hintText != null)
                 {
-                    hintText.text = pickUpPrefix + toolNames[id];
+                    if (id < toolNames.Length)
+                    {
+                        hintText.text = pickUpPrefix + toolNames[id];
+                    }
                 }
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            CheckPickUp();
+        }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            if (currentToolID == -1)
+            {
+                CheckPickUp();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (currentToolID != -1)
+            {
+                DropTool();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SwitchToPickedTool(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SwitchToPickedTool(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SwitchToPickedTool(2);
+
+        if (currentToolID != -1)
+        {
+            if (isActing == false)
+            {
+                HandleToolUsage();
             }
         }
     }
@@ -100,9 +113,9 @@ public class ToolSystem : MonoBehaviour
     void CheckPickUp()
     {
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        if (Physics.Raycast(ray, out RaycastHit hit, 3.5f))
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 3.5f))
         {
-            
             for (int i = 0; i < groundObjects.Length; i++)
             {
                 if (hit.collider.gameObject == groundObjects[i])
@@ -121,11 +134,26 @@ public class ToolSystem : MonoBehaviour
 
         for (int i = 0; i < toolModels.Length; i++)
         {
-            toolModels[i].SetActive(i == id);
+            if (i == id)
+            {
+                toolModels[i].SetActive(true);
+            }
+            else
+            {
+                toolModels[i].SetActive(false);
+            }
         }
 
-        if (audioSource && id < pickUpSounds.Length && pickUpSounds[id])
-            audioSource.PlayOneShot(pickUpSounds[id]);
+        if (audioSource != null)
+        {
+            if (id < pickUpSounds.Length)
+            {
+                if (pickUpSounds[id] != null)
+                {
+                    audioSource.PlayOneShot(pickUpSounds[id]);
+                }
+            }
+        }
 
         UpdateUI();
     }
@@ -142,98 +170,126 @@ public class ToolSystem : MonoBehaviour
 
     void SwitchToPickedTool(int id)
     {
-        if (id < groundObjects.Length && !groundObjects[id].activeSelf)
+        if (id < groundObjects.Length)
         {
-            currentToolID = id;
-            for (int i = 0; i < toolModels.Length; i++)
+            if (groundObjects[id].activeSelf == false)
             {
-                toolModels[i].SetActive(i == id);
+                currentToolID = id;
+                for (int i = 0; i < toolModels.Length; i++)
+                {
+                    if (i == id)
+                    {
+                        toolModels[i].SetActive(true);
+                    }
+                    else
+                    {
+                        toolModels[i].SetActive(false);
+                    }
+                }
+                UpdateUI();
             }
-            UpdateUI();
         }
     }
 
     void HandleToolUsage()
     {
-        
-        if (currentToolID == 0 && Input.GetMouseButtonDown(0))
+        if (currentToolID == 0)
         {
-            StartCoroutine(ActionAnimation(toolModels[0].transform, Vector3.forward * 0.1f));
-            PlayUseEffectAndSound(0);
+            if (Input.GetMouseButtonDown(0))
+            {
+                StartCoroutine(ActionAnimation(toolModels[0].transform, Vector3.forward * 0.1f));
+                PlayUseEffectAndSound(0);
 
-            
-            PerformCutLogic();
+                Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, reachDistance, interactableLayers))
+                {
+                    if (hit.collider.CompareTag(grassTag))
+                    {
+                        GrassProperty grass = hit.collider.GetComponent<GrassProperty>();
+                        if (grass != null)
+                        {
+                            grass.Cut();
+                            GameProgressManager manager = Object.FindFirstObjectByType<GameProgressManager>();
+                            if (manager != null) manager.OnGrassCut();
+                        }
+                        else
+                        {
+                            Destroy(hit.collider.gameObject);
+                            GameProgressManager manager = Object.FindFirstObjectByType<GameProgressManager>();
+                            if (manager != null) manager.OnGrassCut();
+                        }
+                    }
+                }
+            }
         }
-        
         else if (currentToolID == 1)
         {
             if (Input.GetMouseButton(0))
             {
                 toolModels[1].transform.localRotation = Quaternion.Slerp(toolModels[1].transform.localRotation, Quaternion.Euler(40, 0, 0), Time.deltaTime * 5f);
 
-                
                 if (Input.GetMouseButtonDown(0))
                 {
                     GameProgressManager manager = Object.FindFirstObjectByType<GameProgressManager>();
                     if (manager != null) manager.OnWatering();
                 }
 
-                if (effects.Length > 1 && effects[1] && !effects[1].isPlaying) effects[1].Play();
-                if (audioSource && useSounds.Length > 1 && useSounds[1] && !audioSource.isPlaying) { audioSource.clip = useSounds[1]; audioSource.Play(); }
+                if (effects.Length > 1)
+                {
+                    if (effects[1] != null && effects[1].isPlaying == false)
+                    {
+                        effects[1].Play();
+                    }
+                }
+                if (audioSource != null && useSounds.Length > 1)
+                {
+                    if (useSounds[1] != null && audioSource.isPlaying == false)
+                    {
+                        audioSource.clip = useSounds[1];
+                        audioSource.Play();
+                    }
+                }
             }
             else
             {
                 toolModels[1].transform.localRotation = Quaternion.Slerp(toolModels[1].transform.localRotation, Quaternion.identity, Time.deltaTime * 5f);
-                if (effects.Length > 1 && effects[1] && effects[1].isPlaying) effects[1].Stop();
-                if (audioSource && useSounds.Length > 1 && audioSource.clip == useSounds[1]) audioSource.Stop();
+                if (effects.Length > 1 && effects[1] != null)
+                {
+                    if (effects[1].isPlaying == true) effects[1].Stop();
+                }
+                if (audioSource != null && useSounds.Length > 1)
+                {
+                    if (audioSource.clip == useSounds[1]) audioSource.Stop();
+                }
             }
         }
-        
-        else if (currentToolID == 2 && Input.GetMouseButtonDown(0))
+        else if (currentToolID == 2)
         {
-            StartCoroutine(ActionAnimation(toolModels[2].transform, new Vector3(0, -0.2f, 0.2f)));
-            PlayUseEffectAndSound(2);
-
-            
-            GameProgressManager manager = Object.FindFirstObjectByType<GameProgressManager>();
-            if (manager != null) manager.OnDigging();
-        }
-    }
-
-    void PerformCutLogic()
-    {
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, reachDistance, interactableLayers))
-        {
-            if (hit.collider.CompareTag(grassTag))
+            if (Input.GetMouseButtonDown(0))
             {
-                GrassProperty grass = hit.collider.GetComponent<GrassProperty>();
-                if (grass != null)
-                {
-                    grass.Cut();
+                StartCoroutine(ActionAnimation(toolModels[2].transform, new Vector3(0, -0.2f, 0.2f)));
+                PlayUseEffectAndSound(2);
 
-                    
-                    GameProgressManager manager = Object.FindFirstObjectByType<GameProgressManager>();
-                    if (manager != null) manager.OnGrassCut();
-                }
-                else
-                {
-                    Debug.LogWarning(hit.collider.name + " 标签是 Grass 但没挂 GrassProperty 脚本");
-                    Destroy(hit.collider.gameObject);
-
-                    GameProgressManager manager = Object.FindFirstObjectByType<GameProgressManager>();
-                    if (manager != null) manager.OnGrassCut();
-                }
+                GameProgressManager manager = Object.FindFirstObjectByType<GameProgressManager>();
+                if (manager != null) manager.OnDigging();
             }
         }
     }
 
     void PlayUseEffectAndSound(int id)
     {
-        if (id < effects.Length && effects[id]) effects[id].Play();
-        if (audioSource && id < useSounds.Length && useSounds[id]) audioSource.PlayOneShot(useSounds[id]);
+        if (id < effects.Length)
+        {
+            if (effects[id] != null) effects[id].Play();
+        }
+        if (audioSource != null)
+        {
+            if (id < useSounds.Length)
+            {
+                if (useSounds[id] != null) audioSource.PlayOneShot(useSounds[id]);
+            }
+        }
     }
 
     IEnumerator ActionAnimation(Transform target, Vector3 offset)
@@ -242,9 +298,19 @@ public class ToolSystem : MonoBehaviour
         Vector3 originalPos = target.localPosition;
         float dur = 0.1f;
         float elapsed = 0;
-        while (elapsed < dur) { target.localPosition = Vector3.Lerp(originalPos, originalPos + offset, elapsed / dur); elapsed += Time.deltaTime; yield return null; }
+        while (elapsed < dur)
+        {
+            target.localPosition = Vector3.Lerp(originalPos, originalPos + offset, elapsed / dur);
+            elapsed = elapsed + Time.deltaTime;
+            yield return null;
+        }
         elapsed = 0;
-        while (elapsed < dur) { target.localPosition = Vector3.Lerp(originalPos + offset, originalPos, elapsed / dur); elapsed += Time.deltaTime; yield return null; }
+        while (elapsed < dur)
+        {
+            target.localPosition = Vector3.Lerp(originalPos + offset, originalPos, elapsed / dur);
+            elapsed = elapsed + Time.deltaTime;
+            yield return null;
+        }
         target.localPosition = originalPos;
         isActing = false;
     }
@@ -253,7 +319,17 @@ public class ToolSystem : MonoBehaviour
     {
         for (int i = 0; i < toolIcons.Length; i++)
         {
-            if (toolIcons[i]) toolIcons[i].color = (i == currentToolID) ? Color.white : new Color(1, 1, 1, 0.3f);
+            if (toolIcons[i] != null)
+            {
+                if (i == currentToolID)
+                {
+                    toolIcons[i].color = new Color(1, 1, 1, 1);
+                }
+                else
+                {
+                    toolIcons[i].color = new Color(1, 1, 1, 0.3f);
+                }
+            }
         }
     }
 }
