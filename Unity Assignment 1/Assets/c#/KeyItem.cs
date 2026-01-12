@@ -2,43 +2,35 @@ using UnityEngine;
 
 public class KeyItem : MonoBehaviour
 {
-    [Header("References")]
-    public GameProgressManager progressManager; // 拖入场景中的 GameProgressManager
-
-    [Header("Visual Effects")]
-    public float rotationSpeed = 50.0f; // 钥匙自转速度，方便玩家发现
+    public GameProgressManager jindu_guanli;
+    public float xuanzhuan_sudu = 50.0f;
 
     void Update()
     {
-        // 让钥匙在空中自转，增加视觉引导
-        transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+        float mei_zhen_sudu = xuanzhuan_sudu * Time.deltaTime;
+        transform.Rotate(Vector3.up, mei_zhen_sudu);
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider peng_zhuang_ti)
     {
-        // 检测碰撞物体是否为玩家
-        if (other.CompareTag("Player"))
+        if (peng_zhuang_ti.gameObject.tag == "Player")
         {
-            if (progressManager != null)
+            if (jindu_guanli != null)
             {
-                // 1. 修改全局逻辑变量，允许触发结局 C
-                progressManager.hasSpecialKey = true;
+                jindu_guanli.hasSpecialKey = true;
 
-                // 2. 在屏幕日志中显示提示（如果 logUI 已分配）
-                if (progressManager.logUI != null)
+                if (jindu_guanli.logUI != null)
                 {
-                    progressManager.logUI.text = "You found a strange key... Maybe it leads somewhere.";
+                    jindu_guanli.logUI.text = "You found a strange key... Maybe it leads somewhere.";
                 }
 
                 Debug.Log("Special Key Picked Up! Ending C is now available.");
 
-                // 3. 销毁或隐藏钥匙物体，防止重复触发
                 gameObject.SetActive(false);
-                // 或者使用 Destroy(gameObject);
             }
             else
             {
-                Debug.LogError("KeyItem: GameProgressManager 未在 Inspector 面板中分配！");
+                Debug.Log("KeyItem: GameProgressManagermeizhaodao");
             }
         }
     }

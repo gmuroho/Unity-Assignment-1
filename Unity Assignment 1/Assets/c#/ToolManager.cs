@@ -59,7 +59,7 @@ public class ToolManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("meiyou jiaoben");
+                Debug.Log("meiyoujiaoben");
             }
         }
         else
